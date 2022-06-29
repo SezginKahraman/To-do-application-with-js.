@@ -87,20 +87,24 @@ let editMode = false;
 let editedId;
 
 function addTask(e) {
-  if (!editMode) {
-    gorevListesi.push({
-      id: gorevListesi.length + 1,
-      gorevAdi: txtBox.value,
-      durum: "pending",
-    });
+  if (txtBox.value == "") {
+    alert("write something to the txt box !!");
   } else {
-    for (let gorev of gorevListesi) {
-      if (gorev.id == editedId) {
-        gorev.gorevAdi = txtBox.value;
+    if (!editMode) {
+      gorevListesi.push({
+        id: gorevListesi.length + 1,
+        gorevAdi: txtBox.value,
+        durum: "pending",
+      });
+    } else {
+      for (let gorev of gorevListesi) {
+        if (gorev.id == editedId) {
+          gorev.gorevAdi = txtBox.value;
+        }
       }
+      editMode = false;
+      txtBox.value = "";
     }
-    editMode = false;
-    txtBox.value = "";
   }
   e.preventDefault();
   let selectedSpan = document.querySelector(".filters span.active");
@@ -163,6 +167,8 @@ function updateStatus(id, input) {
 document.querySelector("#btnClear").addEventListener("click", function (e) {
   gorevListesi.splice(0, gorevListesi.length);
   localStorage.setItem("gorevListesi", JSON.stringify(gorevListesi));
+  let selectedSpan = document.querySelector(".filters span.active");
+
   displayTask(selectedSpan.id);
 
   e.preventDefault();
